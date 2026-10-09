@@ -26,13 +26,26 @@ import java.util.List;
  */
 public class MainFrame extends JFrame implements BattleListener {
 
-    // ---- Colores del tema ----
-    private static final Color COLOR_FONDO        = new Color(15, 15, 30);
-    private static final Color COLOR_PANEL_JUGADOR = new Color(20, 40, 20);
-    private static final Color COLOR_PANEL_MAQUINA = new Color(40, 20, 20);
-    private static final Color COLOR_TEXTO         = new Color(220, 220, 255);
-    private static final Color COLOR_LOG_FONDO     = new Color(10, 10, 20);
+    // ---- Paleta de colores del tema ----
+    private static final Color COLOR_FONDO         = new Color(15, 15, 30);
+    private static final Color COLOR_PANEL_JUGADOR  = new Color(20, 40, 20);
+    private static final Color COLOR_PANEL_MAQUINA  = new Color(40, 20, 20);
+    private static final Color COLOR_TEXTO          = new Color(220, 220, 255);
+    private static final Color COLOR_LOG_FONDO      = new Color(10, 10, 20);
     private static final Color COLOR_LOG_TEXTO      = new Color(180, 255, 180);
+
+    // Colores para botones
+    private static final Color COLOR_BTN_INICIAR       = new Color(185, 125, 0);  // Ámbar
+    private static final Color COLOR_BTN_INICIAR_HOVER = new Color(220, 160, 0);  // Ámbar claro
+    private static final Color COLOR_BTN_JUGAR         = new Color(120, 60, 200); // Púrpura
+    private static final Color COLOR_BTN_JUGAR_HOVER   = new Color(150, 90, 230); // Púrpura claro
+    private static final Color COLOR_BTN_TEXTO         = Color.BLACK;             // Negro para todos
+
+    // Colores para los diálogos JOptionPane
+    private static final Color COLOR_DIALOGO_FONDO  = new Color(20, 20, 45);
+    private static final Color COLOR_DIALOGO_TEXTO  = new Color(220, 220, 255);
+    private static final Color COLOR_DIALOGO_BTN    = new Color(55, 25, 100);
+    private static final Color COLOR_DIALOGO_BORDE  = new Color(110, 70, 190);
 
     // ---- Componentes de la UI ----
     private JButton btnIniciar;
@@ -75,6 +88,20 @@ public class MainFrame extends JFrame implements BattleListener {
         setLayout(new BorderLayout(8, 8));
         getContentPane().setBackground(COLOR_FONDO);
 
+        // Estilizar los diálogos JOptionPane para que sigan la paleta del juego.
+        // Solo afecta a paneles que NO tienen setBackground() propio (como el interior
+        // de los JOptionPane), no a nuestros paneles que sí lo tienen definido.
+        UIManager.put("OptionPane.background",        COLOR_DIALOGO_FONDO);
+        UIManager.put("Panel.background",             COLOR_DIALOGO_FONDO);
+        UIManager.put("OptionPane.messageForeground", COLOR_DIALOGO_TEXTO);
+        UIManager.put("Button.background",            COLOR_DIALOGO_BTN);
+        UIManager.put("Button.foreground",            Color.BLACK);
+        UIManager.put("Button.select",                COLOR_DIALOGO_BTN.darker());
+        UIManager.put("Button.border", BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(COLOR_DIALOGO_BORDE, 1),
+                BorderFactory.createEmptyBorder(5, 12, 5, 12)
+        ));
+
         // ---- Panel superior: marcador y turno ----
         JPanel panelSuperior = crearPanelSuperior();
         add(panelSuperior, BorderLayout.NORTH);
@@ -115,12 +142,12 @@ public class MainFrame extends JFrame implements BattleListener {
         JPanel panelJugador = new JPanel(new BorderLayout(4, 4));
         panelJugador.setBackground(COLOR_PANEL_JUGADOR);
         panelJugador.setBorder(BorderFactory.createTitledBorder(
-            BorderFactory.createLineBorder(new Color(0, 150, 0), 2),
-            "Tu Campo",
-            javax.swing.border.TitledBorder.CENTER,
-            javax.swing.border.TitledBorder.TOP,
-            new Font("SansSerif", Font.BOLD, 12),
-            new Color(0, 200, 0)
+                BorderFactory.createLineBorder(new Color(0, 150, 0), 2),
+                "Tu Campo",
+                javax.swing.border.TitledBorder.CENTER,
+                javax.swing.border.TitledBorder.TOP,
+                new Font("SansSerif", Font.BOLD, 12),
+                new Color(0, 200, 0)
         ));
 
         panelsJugador = new CardPanel[3];
@@ -138,12 +165,12 @@ public class MainFrame extends JFrame implements BattleListener {
         JPanel panelMaquina = new JPanel(new BorderLayout(4, 4));
         panelMaquina.setBackground(COLOR_PANEL_MAQUINA);
         panelMaquina.setBorder(BorderFactory.createTitledBorder(
-            BorderFactory.createLineBorder(new Color(150, 0, 0), 2),
-            "Campo de la Máquina",
-            javax.swing.border.TitledBorder.CENTER,
-            javax.swing.border.TitledBorder.TOP,
-            new Font("SansSerif", Font.BOLD, 12),
-            new Color(200, 0, 0)
+                BorderFactory.createLineBorder(new Color(150, 0, 0), 2),
+                "Campo de la Máquina",
+                javax.swing.border.TitledBorder.CENTER,
+                javax.swing.border.TitledBorder.TOP,
+                new Font("SansSerif", Font.BOLD, 12),
+                new Color(200, 0, 0)
         ));
 
         panelsMaquina = new CardPanel[3];
@@ -170,12 +197,12 @@ public class MainFrame extends JFrame implements BattleListener {
         panelControles.setBackground(new Color(20, 20, 40));
         panelControles.setBorder(BorderFactory.createLineBorder(new Color(60, 60, 100), 1));
 
-        btnIniciar = new JButton("Iniciar Duelo");
-        estilizarBoton(btnIniciar, new Color(0, 100, 0), Color.WHITE);
+        btnIniciar = new JButton("⚔  Iniciar Duelo");
+        estilizarBoton(btnIniciar, COLOR_BTN_INICIAR, COLOR_BTN_INICIAR_HOVER, COLOR_BTN_TEXTO);
         btnIniciar.addActionListener(e -> iniciarDuelo());
 
-        btnJugar = new JButton("Jugar Carta Seleccionada");
-        estilizarBoton(btnJugar, new Color(100, 0, 0), Color.WHITE);
+        btnJugar = new JButton("▶  Jugar Carta Seleccionada");
+        estilizarBoton(btnJugar, COLOR_BTN_JUGAR, COLOR_BTN_JUGAR_HOVER, COLOR_BTN_TEXTO);
         btnJugar.setEnabled(false);
         btnJugar.addActionListener(e -> jugarCartaSeleccionada());
 
@@ -194,7 +221,10 @@ public class MainFrame extends JFrame implements BattleListener {
         progressBar = new JProgressBar();
         progressBar.setIndeterminate(false);
         progressBar.setVisible(false);
-        progressBar.setPreferredSize(new Dimension(120, 16));
+        progressBar.setPreferredSize(new Dimension(120, 14));
+        progressBar.setBackground(new Color(30, 30, 60));
+        progressBar.setForeground(new Color(140, 90, 0));  // Ámbar, igual que btnIniciar
+        progressBar.setBorderPainted(false);
 
         lblEstado = new JLabel(" ");
         lblEstado.setForeground(new Color(255, 200, 100));
@@ -222,12 +252,12 @@ public class MainFrame extends JFrame implements BattleListener {
 
         JScrollPane scrollLog = new JScrollPane(areaLog);
         scrollLog.setBorder(BorderFactory.createTitledBorder(
-            BorderFactory.createLineBorder(new Color(50, 50, 100), 1),
-            "Log de Batalla",
-            javax.swing.border.TitledBorder.LEFT,
-            javax.swing.border.TitledBorder.TOP,
-            new Font("SansSerif", Font.BOLD, 11),
-            new Color(150, 150, 255)
+                BorderFactory.createLineBorder(new Color(50, 50, 100), 1),
+                "Log de Batalla",
+                javax.swing.border.TitledBorder.LEFT,
+                javax.swing.border.TitledBorder.TOP,
+                new Font("SansSerif", Font.BOLD, 11),
+                new Color(150, 150, 255)
         ));
 
         panel.add(panelControles, BorderLayout.NORTH);
@@ -392,10 +422,10 @@ public class MainFrame extends JFrame implements BattleListener {
         registrarLog("✗ Error: " + mensaje);
         lblEstado.setText("Error al cargar. Intente de nuevo.");
         JOptionPane.showMessageDialog(
-            this,
-            "No se pudieron cargar las cartas:\n" + mensaje,
-            "Error de carga",
-            JOptionPane.ERROR_MESSAGE
+                this,
+                "No se pudieron cargar las cartas:\n" + mensaje,
+                "Error de carga",
+                JOptionPane.ERROR_MESSAGE
         );
         btnIniciar.setEnabled(true);
     }
@@ -434,9 +464,9 @@ public class MainFrame extends JFrame implements BattleListener {
         if (duelActual == null || duelActual.isDuelTerminado()) return;
         if (cartaSeleccionadaIndex < 0) {
             JOptionPane.showMessageDialog(this,
-                "Debes seleccionar una carta primero.",
-                "Sin selección",
-                JOptionPane.WARNING_MESSAGE);
+                    "Debes seleccionar una carta primero.",
+                    "Sin selección",
+                    JOptionPane.WARNING_MESSAGE);
             return;
         }
 
@@ -522,18 +552,18 @@ public class MainFrame extends JFrame implements BattleListener {
         }
 
         String mensajeDialogo = "¡DUELO TERMINADO!\n\n"
-            + "Ganador: " + ganador + "\n\n"
-            + "Marcador final:\n"
-            + "Jugador: " + duelActual.getPuntosJugador() + " victorias\n"
-            + "Máquina: " + duelActual.getPuntosMaquina() + " victorias\n\n"
-            + "¿Deseas iniciar un nuevo duelo?";
+                + "Ganador: " + ganador + "\n\n"
+                + "Marcador final:\n"
+                + "Jugador: " + duelActual.getPuntosJugador() + " victorias\n"
+                + "Máquina: " + duelActual.getPuntosMaquina() + " victorias\n\n"
+                + "¿Deseas iniciar un nuevo duelo?";
 
         int respuesta = JOptionPane.showConfirmDialog(
-            this,
-            mensajeDialogo,
-            "Fin del Duelo",
-            JOptionPane.YES_NO_OPTION,
-            JOptionPane.INFORMATION_MESSAGE
+                this,
+                mensajeDialogo,
+                "Fin del Duelo",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.INFORMATION_MESSAGE
         );
 
         if (respuesta == JOptionPane.YES_OPTION) {
@@ -554,13 +584,46 @@ public class MainFrame extends JFrame implements BattleListener {
         areaLog.setCaretPosition(areaLog.getDocument().getLength());
     }
 
-    private void estilizarBoton(JButton btn, Color fondo, Color texto) {
-        btn.setBackground(fondo);
-        btn.setForeground(texto);
+    /**
+     * Aplica el estilo temático a un botón con efecto hover.
+     *
+     * @param btn        El botón a estilizar
+     * @param colorBase  Color de fondo en reposo
+     * @param colorHover Color de fondo al pasar el mouse
+     * @param colorTexto Color del texto
+     */
+    private void estilizarBoton(JButton btn, Color colorBase, Color colorHover, Color colorTexto) {
+        btn.setBackground(colorBase);
+        btn.setForeground(colorTexto);
         btn.setFont(new Font("SansSerif", Font.BOLD, 12));
         btn.setFocusPainted(false);
-        btn.setBorder(BorderFactory.createEmptyBorder(8, 14, 8, 14));
+        btn.setOpaque(true);           // Necesario para que el fondo se pinte en todos los SO
+        btn.setBorderPainted(true);
+        btn.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(colorHover, 1),          // Borde con el color hover
+                BorderFactory.createEmptyBorder(7, 16, 7, 16)           // Relleno interior
+        ));
         btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+        // Efecto hover: cambia el fondo al entrar y salir con el mouse
+        btn.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+                if (btn.isEnabled()) btn.setBackground(colorHover);
+            }
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent e) {
+                btn.setBackground(colorBase);
+            }
+            @Override
+            public void mousePressed(java.awt.event.MouseEvent e) {
+                if (btn.isEnabled()) btn.setBackground(colorBase.darker());
+            }
+            @Override
+            public void mouseReleased(java.awt.event.MouseEvent e) {
+                if (btn.isEnabled()) btn.setBackground(colorHover);
+            }
+        });
     }
 
     private void estilizarRadioButton(JRadioButton rb) {

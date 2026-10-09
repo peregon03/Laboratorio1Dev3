@@ -5,8 +5,8 @@ Universidad del Valle, Sede Tuluá
 
 | Integrante | Código |
 |---|---|
-| [Nombre Estudiante 1 - Código] | |
-| [Nombre Estudiante 2 - Código] | |
+| Michael Pérez | 2266121 |
+| Santiago Sánchez | 2359606 |
 
 **Docente:** Mg(c). Juan Pablo Pinillos Reina
 
@@ -21,39 +21,51 @@ Aplicación de escritorio en Java Swing que simula un duelo sencillo de Yu-Gi-Oh
 ## Requisitos
 
 - **JDK 11 o superior** (se recomienda JDK 17 LTS)
-- **Apache Maven 3.6+**
+- **IntelliJ IDEA** (Community o Ultimate)
 - **Conexión a internet** (para consultar la API de YGOProDeck y descargar las imágenes de las cartas)
+
+> No es necesario tener Maven instalado por separado: IntelliJ trae Maven integrado.
 
 ---
 
-## Instrucciones de ejecución
+## Cómo ejecutar
 
-### Con Maven (recomendado)
+### 1. Descargar el repositorio
 
+Clonar con Git:
 ```bash
-# 1. Compilar y empaquetar (genera el JAR en target/)
-mvn clean package
-
-# 2. Ejecutar directamente con Maven
-mvn exec:java
-
-# 3. O ejecutar el JAR fat generado (con todas las dependencias incluidas)
-java -jar target/duellite-1.0-SNAPSHOT-fat.jar
+git clone <url-del-repositorio>
 ```
+O descargar el ZIP desde GitHub → **Code → Download ZIP** y descomprimirlo.
 
-### Desde IntelliJ IDEA
+### 2. Abrir en IntelliJ IDEA
 
-1. Abrir IntelliJ IDEA → **File → Open** → seleccionar la carpeta `Lab1`.
-2. IntelliJ detectará el `pom.xml` automáticamente y descargará las dependencias.
-3. Esperar a que termine la indexación del proyecto.
-4. Abrir `src/main/java/co/edu/univalle/duellite/Main.java`.
-5. Hacer clic en el botón ▶ verde junto al método `main`, o presionar **Shift+F10**.
+1. Abrir IntelliJ IDEA.
+2. Ir a **File → Open** y seleccionar la carpeta del proyecto (la que contiene `pom.xml`).
+3. Cuando IntelliJ pregunte, elegir **"Trust Project"**.
 
-### Ejecutar los tests
+### 3. Importar como proyecto Maven
 
-```bash
-mvn test
-```
+En el panel izquierdo, hacer **clic derecho sobre `pom.xml`** → seleccionar **"Add as Maven Project"**.
+
+IntelliJ descargará automáticamente las dependencias. Esperar a que termine (se ve en la barra inferior).
+
+### 4. Ejecutar la aplicación
+
+Abrir el archivo `src/main/java/co/edu/univalle/duellite/Main.java` y hacer clic en el triángulo verde ▶ que aparece junto al método `main`.
+
+---
+
+## Capturas de pantalla
+
+### Cartas cargadas — listas para el duelo
+![Cartas cargadas](Screenshots/CartasCargadas.png)
+
+### Duelo en progreso
+![Duelo en progreso](Screenshots/Duelo.png)
+
+### Anuncio del ganador
+![Ganador](Screenshots/MensajeGanador.png)
 
 ---
 
@@ -83,26 +95,16 @@ Para evitar bloquear el **Event Dispatch Thread (EDT)** de Swing, todas las peti
 
 ---
 
-## Capturas de pantalla
-
-> Las capturas se tomarán una vez la aplicación esté en ejecución.
-
-| Pantalla de inicio | Duelo en progreso | Ganador |
-|---|---|---|
-| ![Inicio](docs/capturas/inicio.png) | ![Duelo](docs/capturas/duelo.png) | ![Ganador](docs/capturas/ganador.png) |
-
----
-
 ## Estructura de paquetes
 
 ```
 Lab1/
 ├── pom.xml
-├── .gitignore
 ├── README.md
-├── docs/
-│   └── capturas/
-│       └── .gitkeep
+├── Screenshots/
+│   ├── CartasCargadas.png
+│   ├── Duelo.png
+│   └── MensajeGanador.png
 └── src/
     ├── main/
     │   └── java/
@@ -135,11 +137,3 @@ Lab1/
 |---|---|---|
 | `org.json:json` | 20240303 | Parseo de respuestas JSON de la API |
 | `org.junit.jupiter:junit-jupiter` | 5.10.2 | Pruebas unitarias (solo en test) |
-
----
-
-## Notas técnicas
-
-- El proyecto cumple el requisito de **no bloquear el EDT**: todas las operaciones lentas (HTTP, imágenes) usan `SwingWorker`.
-- Si una imagen falla al cargar, la carta muestra un placeholder gris sin romper la aplicación.
-- El log de batalla hace autoscroll para siempre mostrar el último evento.
