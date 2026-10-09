@@ -1,0 +1,28 @@
+# Archivos compilados de Maven
+target/
+
+# Archivos de configuración de IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+.claude/
+out/
+
+# Archivos de configuración de Eclipse
+.classpath
+.project
+.settings/
+
+# Archivos de configuración de VS Code
+.vscode/
+
+# Archivos del sistema operativo
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Archivos de clase compilados sueltos
+*.class
